@@ -1,0 +1,1 @@
+{"dependencies":{"express":"^4.19.2"},"description":"ပိုက်ဆံမှတ်တမ်း — Myanmar-first personal expense tracker","license":"MIT","main":"server.js","name":"money-tracker","scripts":{"start":"node server.js"},"version":"1.0.0"}

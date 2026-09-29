@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ပိုက်ဆံမှတ်တမ်း · Money Tracker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">💰 <span data-i18n="appName">ပိုက်ဆံမှတ်တမ်း</span></div>
+  <button id="langToggle" class="lang-toggle" aria-label="language">EN</button>
+</header>
+
+<main id="main">
+  <!-- Dashboard -->
+  <section id="view-dashboard" class="view">
+    <div class="month-nav">
+      <button id="monthPrev" class="icon-btn" aria-label="prev">‹</button>
+      <div id="monthLabel" class="month-label"></div>
+      <button id="monthNext" class="icon-btn" aria-label="next">›</button>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card income">
+        <div class="stat-title" data-i18n="income">အဝင်</div>
+        <div class="stat-value" id="statIncome">0</div>
+      </div>
+      <div class="stat-card expense">
+        <div class="stat-title" data-i18n="expense">အထွက်</div>
+        <div class="stat-value" id="statExpense">0</div>
+      </div>
+      <div class="stat-card balance">
+        <div class="stat-title" data-i18n="balance">လက်ကျန်</div>
+        <div class="stat-value" id="statBalance">0</div>
+      </div>
+    </div>
+    <div class="section-head">
+      <h2 data-i18n="recent">လတ်တလော မှတ်တမ်းများ</h2>
+      <button id="seeAllBtn" class="link-btn" data-i18n="seeAll">အားလုံးကြည့်ရန်</button>
+    </div>
+    <div id="recentList" class="tx-list"></div>
+    <div id="dashEmpty" class="empty hidden">
+      <div class="empty-emoji">📝</div>
+      <p data-i18n="emptyDash">ဒီလအတွက် မှတ်တမ်းမရှိသေးပါ။<br>အောက်က + ခလုတ်နဲ့ စတင်မှတ်ပါ။</p>
+    </div>
+  </section>
+
+  <!-- Add / Edit -->
+  <section id="view-add" class="view hidden">
+    <h2 id="addTitle" data-i18n="addTitle">မှတ်တမ်းအသစ် ထည့်ရန်</h2>
+    <div class="type-toggle">
+      <button id="typeExpense" class="type-btn active">➖ <span data-i18n="expense">အထွက်</span></button>
+      <button id="typeIncome" class="type-btn">➕ <span data-i18n="income">အဝင်</span></button>
+    </div>
+    <label class="field-label" data-i18n="amount">ပမာဏ (ကျပ်)</label>
+    <input id="fAmount" class="amount-input" type="number" inputmode="numeric" min="1" step="1"
+           data-i18n-ph="amountPh" placeholder="ဥပမာ 5000">
+    <label class="field-label" data-i18n="category">အမျိုးအစား</label>
+    <div id="catGrid" class="cat-grid"></div>
+    <div class="form-row">
+      <div class="form-col">
+        <label class="field-label" data-i18n="date">ရက်စွဲ</label>
+        <input id="fDate" type="date" class="text-input">
+      </div>
+      <div class="form-col">
+        <label class="field-label" data-i18n="note">မှတ်ချက်</label>
+        <input id="fNote" type="text" class="text-input" data-i18n-ph="notePh" placeholder="ဥပမာ နေ့လည်စာ">
+      </div>
+    </div>
+    <div id="formError" class="form-error hidden"></div>
+    <button id="saveBtn" class="primary-btn" data-i18n="save">💾 သိမ်းမည်</button>
+    <button id="cancelEditBtn" class="ghost-btn hidden" data-i18n="cancel">မလုပ်တော့ပါ</button>
+  </section>
+
+  <!-- History -->
+  <section id="view-history" class="view hidden">
+    <h2 data-i18n="history">မှတ်တမ်းများ</h2>
+    <div class="filters">
+      <input id="hMonth" type="month" class="text-input">
+      <select id="hType" class="text-input">
+        <option value="" data-i18n="allTypes">အမျိုးအစားအားလုံး</option>
+        <option value="expense" data-i18n="expense">အထွက်</option>
+        <option value="income" data-i18n="income">အဝင်</option>
+      </select>
+      <select id="hCat" class="text-input"><option value="" data-i18n="allCats">ကဏ္ဍအားလုံး</option></select>
+    </div>
+    <div id="historyList"></div>
+    <div id="histEmpty" class="empty hidden">
+      <div class="empty-emoji">🔍</div>
+      <p data-i18n="emptyHist">မှတ်တမ်း မတွေ့ပါ။</p>
+    </div>
+  </section>
+
+  <!-- Reports -->
+  <section id="view-reports" class="view hidden">
+    <h2 data-i18n="reports">အစီရင်ခံစာ</h2>
+    <h3 class="sub-head" data-i18n="last6">နောက်ဆုံး ၆ လ</h3>
+    <div id="barChart" class="chart-card"></div>
+    <h3 class="sub-head"><span data-i18n="byCat">ကဏ္ဍအလိုက်</span> · <span id="donutMonth"></span></h3>
+    <div id="donutChart" class="chart-card"></div>
+    <div id="catTotals" class="cat-totals"></div>
+    <div id="repEmpty" class="empty hidden">
+      <div class="empty-emoji">📊</div>
+      <p data-i18n="emptyRep">အစီရင်ခံစာအတွက် မှတ်တမ်းမရှိသေးပါ။</p>
+    </div>
+  </section>
+</main>
+
+<button id="fab" class="fab" aria-label="add">＋</button>
+
+<nav class="bottomnav">
+  <button class="nav-btn active" data-view="dashboard">🏠<span data-i18n="navHome">ပင်မ</span></button>
+  <button class="nav-btn" data-view="add">➕<span data-i18n="navAdd">ထည့်ရန်</span></button>
+  <button class="nav-btn" data-view="history">📋<span data-i18n="navHist">မှတ်တမ်း</span></button>
+  <button class="nav-btn" data-view="reports">📊<span data-i18n="navRep">အစီရင်ခံစာ</span></button>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
